@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>Cart</title></head>
+<body>
+  <h1>Your Cart</h1>
+  <ul>
+  <% cart.forEach(item => { %>
+    <li>
+      <%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %>
+      <form style="display:inline" method="POST" action="/cart/remove/<%= item.product._id %>">
+        <button type="submit">Remove</button>
+      </form>
+    </li>
+  <% }) %>
+  </ul>
+  <a href="/products">Continue Shopping</a>
+  <% if (cart.length) { %>
+    <a href="/cart/checkout">Checkout</a>
+  <% } %>
+</body>
+</html>

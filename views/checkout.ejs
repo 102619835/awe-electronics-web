@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Checkout</title></head>
+<body>
+  <h1>Checkout</h1>
+  <ul>
+  <% cart.forEach(item => { %>
+    <li>
+      <%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %>
+    </li>
+  <% }) %>
+  </ul>
+  <form method="POST" action="/cart/checkout">
+    <button type="submit">Place Order (simulate payment)</button>
+  </form>
+  <a href="/cart">Back to Cart</a>
+</body>
+</html>

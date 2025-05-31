@@ -1,12 +1,41 @@
-<h1>Products</h1>
-<ul>
-  <% products.forEach(p => { %>
-    <li><%= p.name %> - $<%= p.price %>
-      <form method="POST" action="/cart/add">
-        <input type="hidden" name="productId" value="<%= p._id %>">
-        <button>Add to Cart</button>
-      </form>
-    </li>
-  <% }) %>
-</ul>
-<a href="/checkout">Checkout</a>
+<!DOCTYPE html>
+<html>
+<head><title>Products</title></head>
+<body>
+  <% if (role === 'host') { %>
+    <a href="/products/new">Add Product</a>
+    <a href="/orders/host/all">View All Orders</a>
+  <% } %>
+  <h1>Product List</h1>
+  <ul>
+    <% products.forEach(product => { %>
+      <li>
+        <% if (product.image) { %>
+          <img src="<%= product.image %>" alt="pic" width="80"/>
+        <% } %>
+        <b><%= product.name %></b> - $<%= product.price %>  
+        (Available: <%= product.quantity %>)
+        <% if (role === 'host') { %>
+          <a href="/products/<%= product._id %>/edit">Edit</a>
+          <form style="display:inline" method="POST" action="/products/<%= product._id %>/delete">
+            <button type="submit">Delete</button>
+          </form>
+        <% } else if (role === 'customer' && product.quantity > 0) { %>
+          <form style="display:inline" method="POST" action="/cart/add/<%= product._id %>">
+            <button type="submit">Add to Cart</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+  <% if (role === 'customer') { %>
+    <a href="/cart">View Cart</a>
+    <a href="/orders">My Orders</a>
+  <% } %>
+  <% if (currentUser) { %>
+    <a href="/logout">Logout</a>
+  <% } else { %>
+    <a href="/login">Login</a>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title><%= action %> Product</title></head>
+<body>
+  <h1><%= action %> Product</h1>
+  <form method="POST" enctype="multipart/form-data" action="<%= product._id ? '/products/' + product._id + '/edit' : '/products/new' %>">
+    <label>Name: <input type="text" name="name" value="<%= product.name || '' %>" required/></label><br/>
+    <label>Price: <input type="number" name="price" value="<%= product.price || '' %>" required/></label><br/>
+    <label>Quantity: <input type="number" name="quantity" value="<%= product.quantity || '' %>" required/></label><br/>
+    <label>Picture: <input type="file" name="image" /></label><br/>
+    <% if (product.image) { %>
+      <img src="<%= product.image %>" width="100"/>
+    <% } %>
+    <button type="submit"><%= action %></button>
+  </form>
+  <a href="/products">Back</a>
+</body>
+</html>

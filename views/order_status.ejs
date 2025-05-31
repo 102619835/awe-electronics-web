@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Order <%= order._id %></title></head>
+<body>
+  <h1>Order Details</h1>
+  <ul>
+    <% order.products.forEach(item => { %>
+      <li><%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %></li>
+    <% }) %>
+  </ul>
+  <p>Status: <b><%= order.status %></b></p>
+  <% if (isHost) { %>
+    <form method="POST" action="/orders/<%= order._id %>/status">
+      <select name="status">
+        <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+        <option value="Paid" <%= order.status === 'Paid' ? 'selected' : '' %>>Paid</option>
+        <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+      </select>
+      <button type="submit">Update Status</button>
+    </form>
+  <% } %>
+  <a href="/products">Back to Products</a>
+</body>
+</html>

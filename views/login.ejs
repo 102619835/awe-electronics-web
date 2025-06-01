@@ -2,15 +2,21 @@
 <html>
 <head><title>Login</title></head>
 <body>
-  <h1>Login</h1>
-  <% if (typeof error !== 'undefined') { %>
-    <p style="color: red"><%= error %></p>
-  <% } %>
-  <form method="POST" action="/login">
-    <label>Username: <input type="text" name="username" required /></label><br/>
-    <label>Password: <input type="password" name="password" required /></label><br/>
-    <button type="submit">Login</button>
-  </form>
-  <a href="/register">Register</a>
+<h1 class="mb-4">Login</h1>
+<% if (typeof error !== 'undefined') { %>
+  <div class="alert alert-danger"><%= error %></div>
+<% } %>
+<form method="POST" action="/login" class="w-50 mx-auto">
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input class="form-control" type="text" name="username" required />
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input class="form-control" type="password" name="password" required />
+  </div>
+  <button class="btn btn-primary w-100" type="submit">Login</button>
+</form>
+<a href="/register" class="d-block text-center mt-3">Register</a>
 </body>
 </html>

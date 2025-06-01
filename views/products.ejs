@@ -2,40 +2,35 @@
 <html>
 <head><title>Products</title></head>
 <body>
-  <% if (role === 'host') { %>
-    <a href="/products/new">Add Product</a>
-    <a href="/orders/host/all">View All Orders</a>
-  <% } %>
-  <h1>Product List</h1>
-  <ul>
-    <% products.forEach(product => { %>
-      <li>
+<%- include('partials/header') %>
+<h1 class="mb-4">Product List</h1>
+<div class="row">
+  <% products.forEach(product => { %>
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
         <% if (product.image) { %>
-          <img src="<%= product.image %>" alt="pic" width="80"/>
+          <img src="<%= product.image %>" class="card-img-top" style="height:200px;object-fit:cover;">
         <% } %>
-        <b><%= product.name %></b> - $<%= product.price %>  
-        (Available: <%= product.quantity %>)
-        <% if (role === 'host') { %>
-          <a href="/products/<%= product._id %>/edit">Edit</a>
-          <form style="display:inline" method="POST" action="/products/<%= product._id %>/delete">
-            <button type="submit">Delete</button>
-          </form>
-        <% } else if (role === 'customer' && product.quantity > 0) { %>
-          <form style="display:inline" method="POST" action="/cart/add/<%= product._id %>">
-            <button type="submit">Add to Cart</button>
-          </form>
-        <% } %>
-      </li>
-    <% }) %>
-  </ul>
-  <% if (role === 'customer') { %>
-    <a href="/cart">View Cart</a>
-    <a href="/orders">My Orders</a>
-  <% } %>
-  <% if (currentUser) { %>
-    <a href="/logout">Logout</a>
-  <% } else { %>
-    <a href="/login">Login</a>
-  <% } %>
+        <div class="card-body">
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text">
+            <strong>Price:</strong> $<%= product.price %><br>
+            <strong>Available:</strong> <%= product.quantity %>
+          </p>
+          <% if (role === 'host') { %>
+            <a href="/products/<%= product._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+            <form method="POST" action="/products/<%= product._id %>/delete" class="d-inline">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          <% } else if (role === 'customer' && product.quantity > 0) { %>
+            <form method="POST" action="/cart/add/<%= product._id %>">
+              <button type="submit" class="btn btn-success btn-sm">Add to Cart</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
 </body>
 </html>

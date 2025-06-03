@@ -1,25 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head><title>Order <%= order._id %></title></head>
-<body>
-  <h1>Order Details</h1>
-  <ul>
-    <% order.products.forEach(item => { %>
-      <li><%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %></li>
-    <% }) %>
-  </ul>
-  <p>Status: <b><%= order.status %></b></p>
-  <% if (isHost) { %>
-    <form method="POST" action="/orders/<%= order._id %>/status">
-      <select name="status">
-        <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
-        <option value="Paid" <%= order.status === 'Paid' ? 'selected' : '' %>>Paid</option>
-        <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-      </select>
-      <button type="submit">Update Status</button>
-    </form>
-  <% } %>
-  <a href="/products">Back to Products</a>
-</body>
-</html>
+<%- include('partials/header', { title: 'Order Detail' }) %>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Order #<%= order._id %></h3>
+      </div>
+      <div class="card-body">
+        <h5 class="mb-3">Items</h5>
+        <ul class="list-group mb-4">
+          <% order.products.forEach(item => { %>
+            <li class="list-group-item d-flex align-items-center">
+              <% if (item.product.image) { %>
+                <img src="<%= item.product.image %>" alt="" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+              <% } %>
+              <div class="flex-grow-1">
+                <strong><%= item.product.name %></strong>
+                <div class="text-muted">x<%= item.quantity %></div>
+              </div>
+              <span class="fw-bold">$<%= (item.product.price * item.quantity).toFixed(2) %></span>
+            </li>
+          <% }) %>
+        </ul>
+        <div class="mb-2">
+          <span class="fw-bold">Status:</span>
+          <span class="badge bg-info text-dark"><%= order.status %></span>
+        </div>
+        <% if (role === 'host') { %>
+          <form method="POST" action="/orders/<%= order._id %>/status" class="mb-3">
+            <div class="input-group">
+              <select name="status" class="form-select">
+                <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                <option value="Paid" <%= order.status === 'Paid' ? 'selected' : '' %>>Paid</option>
+                <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+              </select>
+              <button class="btn btn-success" type="submit">Update</button>
+            </div>
+          </form>
+        <% } %>
+        <div class="mb-4">
+          <span class="fw-bold">Total:</span>
+          <span class="fs-5 text-success">
+            $<%= order.products.reduce((sum, item) => sum + (item.product.price * item.quantity), 0).toFixed(2) %>
+          </span>
+        </div>
+        <a href="<%= role === 'host' ? '/orders/host/all' : '/orders' %>" class="btn btn-outline-primary">Back to Orders</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

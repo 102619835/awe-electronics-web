@@ -1,18 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head><title>Checkout</title></head>
-<body>
-  <h1>Checkout</h1>
-  <ul>
-  <% cart.forEach(item => { %>
-    <li>
-      <%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %>
-    </li>
-  <% }) %>
+<%- include('partials/header', { title: 'Checkout' }) %>
+<h2 class="mb-4">Checkout</h2>
+<% if (cart && cart.length > 0) { %>
+  <ul class="list-group mb-4">
+    <% cart.forEach(item => { %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>
+          <strong><%= item.product.name %></strong>
+          <span class="text-muted">x<%= item.quantity %></span>
+        </span>
+        <span>$<%= (item.product.price * item.quantity).toFixed(2) %></span>
+      </li>
+    <% }) %>
   </ul>
+  <div class="mb-3 text-end">
+    <strong>
+      Total: $
+      <%= cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0).toFixed(2) %>
+    </strong>
+  </div>
   <form method="POST" action="/cart/checkout">
-    <button type="submit">Place Order (simulate payment)</button>
+    <button class="btn btn-primary w-100" type="submit">Place Order</button>
   </form>
-  <a href="/cart">Back to Cart</a>
-</body>
-</html>
+<% } else { %>
+  <div class="alert alert-info">Your cart is empty!</div>
+<% } %>
+<a href="/products" class="btn btn-link">Back to Products</a>
+<%- include('partials/footer') %>

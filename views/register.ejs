@@ -1,23 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head><title>Register</title></head>
-<body>
-  <h1>Register</h1>
-  <% if (typeof error !== 'undefined') { %>
-    <p style="color: red"><%= error %></p>
-  <% } %>
-  <form method="POST" action="/register">
-    <label>Username: <input type="text" name="username" required /></label><br/>
-    <label>Password: <input type="password" name="password" required /></label><br/>
-    <label>
-      Role:
-      <select name="role">
-        <option value="customer">Customer</option>
-        <option value="host">Host</option>
-      </select>
-    </label><br/>
-    <button type="submit">Register</button>
-  </form>
-  <a href="/login">Login</a>
-</body>
-</html>
+<%- include('partials/header', { title: 'Register' }) %>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-body">
+        <h2 class="card-title mb-4 text-center">Register</h2>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form method="POST" action="/register">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input class="form-control" type="text" name="username" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input class="form-control" type="password" name="password" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-select" name="role" required>
+              <option value="customer">Customer</option>
+              <option value="host">Host</option>
+            </select>
+          </div>
+          <button class="btn btn-success w-100" type="submit">Register</button>
+        </form>
+        <div class="text-center mt-3">
+          <a href="/login">Back to Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

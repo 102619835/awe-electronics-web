@@ -1,0 +1,18 @@
+<%- include('partials/header', { title: 'Order Confirmation' }) %>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow">
+      <div class="card-body text-center">
+        <h2 class="card-title mb-4">Order Placed!</h2>
+        <% if (order) { %>
+          <div class="alert alert-success">Thank you for your order!<br>Your order ID is <strong><%= order._id %></strong>.</div>
+          <a href="/orders/<%= order._id %>" class="btn btn-primary">View Order Details</a>
+        <% } else { %>
+          <div class="alert alert-danger">There was a problem processing your order.</div>
+        <% } %>
+        <a href="/products" class="btn btn-link mt-3">Back to Products</a>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

@@ -1,21 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head><title>Cart</title></head>
-<body>
-  <h1>Your Cart</h1>
-  <ul>
-  <% cart.forEach(item => { %>
-    <li>
-      <%= item.product.name %> ($<%= item.product.price %>) x <%= item.quantity %>
-      <form style="display:inline" method="POST" action="/cart/remove/<%= item.product._id %>">
-        <button type="submit">Remove</button>
-      </form>
-    </li>
-  <% }) %>
-  </ul>
-  <a href="/products">Continue Shopping</a>
-  <% if (cart.length) { %>
-    <a href="/cart/checkout">Checkout</a>
-  <% } %>
-</body>
-</html>
+<%- include('partials/header', { title: 'Cart' }) %>
+<h2 class="mb-4">Your Cart</h2>
+<% if (cart && cart.length > 0) { %>
+  <div class="row">
+    <% cart.forEach(item => { %>
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <% if (item.product.image) { %>
+            <img src="<%= item.product.image %>" class="card-img-top" style="height:200px;object-fit:cover;">
+          <% } %>
+          <div class="card-body">
+            <h5 class="card-title"><%= item.product.name %></h5>
+            <p class="card-text">
+              <strong>Price:</strong> $<%= item.product.price %><br>
+              <strong>Quantity:</strong> <%= item.quantity %>
+            </p>
+            <form method="POST" action="/cart/remove/<%= item.product._id %>">
+              <button class="btn btn-danger btn-sm">Remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <div class="mb-3 text-end">
+    <strong>
+      Total: $
+      <%= cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0).toFixed(2) %>
+    </strong>
+  </div>
+  <a href="/cart/checkout" class="btn btn-primary mb-3">Checkout</a>
+<% } else { %>
+  <div class="alert alert-info">Your cart is empty!</div>
+<% } %>
+<a href="/products" class="btn btn-link">Continue Shopping</a>
+<%- include('partials/footer') %>

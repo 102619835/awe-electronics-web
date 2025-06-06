@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const { ensureAuthenticated, ensureRole } = require('../middleware/auth');
+const Order = require('../models/Order');
 
 router.post('/add/:id', ensureAuthenticated, ensureRole('customer'), async (req, res) => {
   const product = await Product.findById(req.params.id);
@@ -39,7 +40,6 @@ router.get('/checkout', ensureAuthenticated, ensureRole('customer'), async (req,
   res.render('checkout', { cart });
 });
 
-const Order = require('../models/order');
 router.post('/checkout', ensureAuthenticated, ensureRole('customer'), async (req, res) => {
   if (!req.session.cart || req.session.cart.length === 0) return res.redirect('/cart');
   // Decrement product quantity

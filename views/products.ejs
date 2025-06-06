@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head><title>Products</title></head>
-<body>
-<%- include('partials/header') %>
+<%- include('partials/header', { title: 'Products' }) %>
 <h1 class="mb-4">Product List</h1>
 <div class="row">
   <% products.forEach(product => { %>
@@ -32,5 +28,4 @@
     </div>
   <% }) %>
 </div>
-</body>
-</html>
+<%- include('partials/footer') %>
